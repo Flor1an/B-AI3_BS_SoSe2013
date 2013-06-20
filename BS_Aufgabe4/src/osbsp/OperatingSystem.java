@@ -13,40 +13,40 @@ import java.util.*;
 public class OperatingSystem {
 	// ------------ Vordefinierte Prozess-Parameter -----------------------
 	/**
-	 * max. Anzahl Seiten pro Prozess im Hauptspeicher (sonst Verdrängung
+	 * max. Anzahl Seiten pro Prozess im Hauptspeicher (sonst Verdrï¿½ngung
 	 * eigener Seiten):
 	 */
 	private int MAX_RAM_PAGES_PER_PROCESS = 10;
 
 	/**
-	 * max. Anzahl Prozesse (muss beschränkt werden, da kein Swapping
+	 * max. Anzahl Prozesse (muss beschrï¿½nkt werden, da kein Swapping
 	 * implementiert ist!): (ein Teil des Hauptspeichers muss immer frei bleiben
-	 * (u.a. für Caching etc.), daher -PAGE_SIZE)
+	 * (u.a. fï¿½r Caching etc.), daher -PAGE_SIZE)
 	 */
 	private int MAX_NUM_OF_PROCESSES = (RAM_SIZE - PAGE_SIZE)
 			/ (MAX_RAM_PAGES_PER_PROCESS * PAGE_SIZE);
 
 	/**
-	 * Dieser Faktor bestimmt das "Lokalitätsverhalten" eines Programms (=
+	 * Dieser Faktor bestimmt das "Lokalitï¿½tsverhalten" eines Programms (=
 	 * Anzahl Operationen innerhalb eines Seitenbereichs)
 	 */
 	private int DEFAULT_LOCALITY_FACTOR = 30;
 
-	// ------------ Konfigurierbare maschinenabhängige Parameter
+	// ------------ Konfigurierbare maschinenabhï¿½ngige Parameter
 	// ---------------------------------------------------------
 
 	/**
-	 * Länge eines Datenworts in Byte (default: 4 Byte = 32 Bit)
+	 * Lï¿½nge eines Datenworts in Byte (default: 4 Byte = 32 Bit)
 	 */
 	private static final int WORD_SIZE = 4;
 
 	/**
-	 * Größe des RAM in Byte (default: 2^16 Byte = 64 KB RAM)
+	 * Grï¿½ï¿½e des RAM in Byte (default: 2^16 Byte = 64 KB RAM)
 	 */
 	private static final int RAM_SIZE = 65536;
 
 	/**
-	 * Seitengröße (default: 2^8 Byte = 256 Byte Seitengröße --> max. 2^8 = 256
+	 * Seitengrï¿½ï¿½e (default: 2^8 Byte = 256 Byte Seitengrï¿½ï¿½e --> max. 2^8 = 256
 	 * Seitenrahmen , 64 Worte pro Seitenrahmen)
 	 */
 	private static final int PAGE_SIZE = 256;
@@ -56,7 +56,7 @@ public class OperatingSystem {
 	 */
 	private static final int VIRT_ADR_SPACE = 1048576;
 
-	// ------------ Abgeleitete maschinenabhängige Parameter
+	// ------------ Abgeleitete maschinenabhï¿½ngige Parameter
 	// ------------------------------------------------------
 
 	/**
@@ -66,13 +66,13 @@ public class OperatingSystem {
 	private static final int MAX_NO_OF_PAGES = VIRT_ADR_SPACE / PAGE_SIZE;
 
 	/**
-	 * Platteneigenschaften: Plattengröße = virt. Adressraum reicht hier, weil
+	 * Platteneigenschaften: Plattengrï¿½ï¿½e = virt. Adressraum reicht hier, weil
 	 * wir keine weiteren Dateien brauchen
 	 */
 	private static final int DISK_SIZE = VIRT_ADR_SPACE;
 
 	/**
-	 * Größe eines Plattenblocks = PAGE_SIZE
+	 * Grï¿½ï¿½e eines Plattenblocks = PAGE_SIZE
 	 */
 	private static final int BLOCK_SIZE = PAGE_SIZE;
 
@@ -116,7 +116,7 @@ public class OperatingSystem {
 
 	// -------------------------- Teststeuerung -----------------------------
 	/**
-	 * Testausgaben erwünscht?
+	 * Testausgaben erwï¿½nscht?
 	 */
 	private boolean testMode = false;
 
@@ -165,14 +165,14 @@ public class OperatingSystem {
 	 * Prozess-Objekt (Thread) erzeugen und in Prozessliste eintragen
 	 * 
 	 * @param die
-	 *            Größe des Prozess-Hauptspeicherbedarfs in Byte
+	 *            Grï¿½ï¿½e des Prozess-Hauptspeicherbedarfs in Byte
 	 * 
-	 * @return die neue Prozess-ID oder -1, wenn Erzeugung nicht möglich
+	 * @return die neue Prozess-ID oder -1, wenn Erzeugung nicht mï¿½glich
 	 *         (Speichermangel)
 	 */
 	public synchronized int createProcess(int processSize) {
 		if (processTable.size() < MAX_NUM_OF_PROCESSES) {
-			// RAM-Platz für neuen Prozess vorhanden
+			// RAM-Platz fï¿½r neuen Prozess vorhanden
 			Process proc = new Process(this, processCounter, processSize);
 			processTable.add(proc);
 			System.out.println("Prozess " + proc.pid + " wurde erzeugt!");
@@ -180,7 +180,7 @@ public class OperatingSystem {
 			loadProcess(processCounter, processSize);
 			// Prozess als JAVA-Thread starten
 			proc.start();
-			processCounter++; // Neue Prozess-IDs werden hochgezählt
+			processCounter++; // Neue Prozess-IDs werden hochgezï¿½hlt
 			return proc.pid;
 		} else {
 			// RAM voll
@@ -203,7 +203,7 @@ public class OperatingSystem {
 		System.out.println("Prozess " + pid + ": " + processSize + " Byte ("
 				+ processSize / getPAGE_SIZE()
 				+ " Seiten) in den Speicher geladen!");
-		// Statistikzähler neu initialisieren
+		// Statistikzï¿½hler neu initialisieren
 		eventLog.resetCounter();
 	}
 
@@ -239,13 +239,13 @@ public class OperatingSystem {
 		int offset; // Offset innerhalb der Seite
 		int realAddressOfItem; // Reale Adresse des Datenworts
 		Process proc; // Aktuelles Prozessobjekt
-		PageTableEntry pte; // Eintrag für die zu schreibende Seite
+		PageTableEntry pte; // Eintrag fï¿½r die zu schreibende Seite
 
-		// Übergebene Adresse prüfen
+		// ï¿½bergebene Adresse prï¿½fen
 		if ((virtAdr < 0) || (virtAdr > VIRT_ADR_SPACE - WORD_SIZE)) {
 			System.err.println("OS: write ERROR " + pid + ": Adresse "
 					+ virtAdr
-					+ " liegt außerhalb des virtuellen Adressraums 0 - "
+					+ " liegt auï¿½erhalb des virtuellen Adressraums 0 - "
 					+ VIRT_ADR_SPACE);
 			return -1;
 		}
@@ -264,7 +264,7 @@ public class OperatingSystem {
 					+ " in Seitentabelle nicht vorhanden");
 			pte = new PageTableEntry();
 			pte.virtPageNum = virtualPageNum;
-			// Seitenrahmen im RAM für die neue Seite anfordern und reale
+			// Seitenrahmen im RAM fï¿½r die neue Seite anfordern und reale
 			// (RAM-)SeitenAdresse eintragen
 			pte.realPageFrameAdr = getNewRAMPage(pte, pid);
 			pte.valid = true;
@@ -287,11 +287,11 @@ public class OperatingSystem {
 		// Datenwort in RAM eintragen
 		writeToRAM(realAddressOfItem, item);
 		testOut("OS: write " + pid + " +++ item: " + item
-				+ " terfolgreich an virt. Adresse " + virtAdr
+				+ " erfolgreich an virt. Adresse " + virtAdr
 				+ " geschrieben! RAM-Adresse: " + realAddressOfItem + " \n");
 		// Seitentabelle bzgl. Zugriffshistorie aktualisieren
 		pte.referenced = true;
-		// Statistische Zählung
+		// Statistische Zï¿½hlung
 		eventLog.incrementWriteAccesses();
 		return 0;
 	}
@@ -313,14 +313,11 @@ public class OperatingSystem {
 		int offset; // Offset innerhalb der Seite
 		int realAddressOfItem; // Reale Adresse des Datenworts
 		Process proc; // Aktuelles Prozessobjekt
-		PageTableEntry pte; // Eintrag für die zu schreibende Seite
+		PageTableEntry pte; // Eintrag fï¿½r die zu schreibende Seite
 
-		// Übergebene Adresse prüfen
+		// ï¿½bergebene Adresse prï¿½fen
 		if ((virtAdr < 0) || (virtAdr > VIRT_ADR_SPACE - WORD_SIZE)) {
-			System.err.println("OS: write ERROR " + pid + ": Adresse "
-					+ virtAdr
-					+ " liegt außerhalb des virtuellen Adressraums 0 - "
-					+ VIRT_ADR_SPACE);
+			System.err.println("OS: write ERROR " + pid + ": Adresse "+ virtAdr	+ " liegt auï¿½erhalb des virtuellen Adressraums 0 - "	+ VIRT_ADR_SPACE);
 			return -1;
 		}
 		// Seitenadresse berechnen
@@ -331,36 +328,40 @@ public class OperatingSystem {
 
 		// Seite in Seitentabelle referenzieren
 		proc = getProcess(pid);
+		//null check process und pagetable
 		pte = proc.pageTable.getPte(virtualPageNum);
+		
+		int result;
+		
 		if (pte == null) {
 			// Seite nicht vorhanden:
 			testOut("OS: read " + pid + " +++ Seitennr.: " + virtualPageNum
 					+ " in Seitentabelle nicht vorhanden");
-		
+			result=-1;
 		} else {
 			// Seite vorhanden: Seite valid (im RAM)?
 			if (!pte.valid) {
 				// Seite nicht valid (also auf Platte --> Seitenfehler):
 				pte = handlePageFault(pte, pid);
 			}
+			// ------ Zustand: Seite ist in Seitentabelle und im RAM vorhanden
+			// Reale Adresse des Datenworts berechnen
+			realAddressOfItem = pte.realPageFrameAdr + offset;
+			// Datenwort aus RAM auslesen
+			 result = readFromRAM(realAddressOfItem);
+	
+			testOut("OS: read " + pid + " +++ item: " + " erfolgreich aus virt. Adresse " + virtAdr	+ " gelesen! RAM-Adresse: " + realAddressOfItem + " \n");
+			// Seitentabelle bzgl. Zugriffshistorie aktualisieren
+			pte.referenced = true;
+			// Statistische Zï¿½hlung
+			eventLog.incrementWriteAccesses();
+		
 		}
-		// ------ Zustand: Seite ist in Seitentabelle und im RAM vorhanden
+		
 			
 				
-				
-		// Reale Adresse des Datenworts berechnen
-		realAddressOfItem = pte.realPageFrameAdr + offset;
-		// Datenwort aus RAM auslesen
-		int result = readFromRAM(realAddressOfItem);
+		return result;		
 
-		testOut("OS: read " + pid + " +++ item: " 
-				+ " erfolgreich aus virt. Adresse " + virtAdr
-				+ " gelesen! RAM-Adresse: " + realAddressOfItem + " \n");
-		// Seitentabelle bzgl. Zugriffshistorie aktualisieren
-		pte.referenced = true;
-		// Statistische Zählung
-		eventLog.incrementWriteAccesses();
-		return result;
 		
 	}
 
@@ -371,7 +372,7 @@ public class OperatingSystem {
 
 	/**
 	 * @param pid
-	 * @return Prozess-Objekt für die Prozess-ID
+	 * @return Prozess-Objekt fï¿½r die Prozess-ID
 	 */
 	private Process getProcess(int pid) {
 		return (Process) processTable.get(pid);
@@ -386,7 +387,7 @@ public class OperatingSystem {
 	private int getVirtualPageNum(int virtAdr) {
 		// Kap 4 Folie 27:
 		// 1. Ermittlung der virtuellen Seitennummer:
-		// Virtuelle Seitennummer = floor(virtuelle Adresse / Seitengröße)
+		// Virtuelle Seitennummer = floor(virtuelle Adresse / SeitengrÃ¶ÃŸe)
 
 		return (int) Math.floor(virtAdr / getPAGE_SIZE());
 	}
@@ -398,13 +399,13 @@ public class OperatingSystem {
 	 */
 	private int getOffset(int virtAdr) {
 		// Kap 4 Folie 27:
-		// 3. Offset = Virtuelle Adresse modulo Seitengröße
+		// 3. Offset = Virtuelle Adresse modulo SeitengrÃ¶ÃŸe
 		return virtAdr % getPAGE_SIZE();
 	}
 
 	// ******* AUFGABE 1 ENDE ***********
 	/**
-	 * Behandlung eines Seitenfehlers für die durch den pte beschriebene Seite
+	 * Behandlung eines Seitenfehlers fï¿½r die durch den pte beschriebene Seite
 	 * 
 	 * @param pte
 	 *            Seitentabelleneintrag
@@ -415,9 +416,9 @@ public class OperatingSystem {
 	private PageTableEntry handlePageFault(PageTableEntry pte, int pid) {
 		int newPageFrameAdr; // Reale Adresse einer neuen Seite im RAM
 
-		testOut("OS: " + pid + " +++ Seitenfehler für Seite " + pte.virtPageNum);
-		eventLog.incrementPageFaults(); // Statistische Zählung
-		// neue Seite im RAM anfordern (ggf. alte Seite verdrängen!)
+		testOut("OS: " + pid + " +++ Seitenfehler fÃ¼r Seite " + pte.virtPageNum);
+		eventLog.incrementPageFaults(); // Statistische Zï¿½hlung
+		// neue Seite im RAM anfordern (ggf. alte Seite verdrï¿½ngen!)
 		newPageFrameAdr = getNewRAMPage(pte, pid);
 		// Seite von Platte in neue RAM-Seite lesen (realPageAdr muss
 		// Plattenblockadresse gewesen sein!)
@@ -434,7 +435,7 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * Leere RAM-Seite zur Verfügung stellen (ggf. alte Seite auslagern)
+	 * Leere RAM-Seite zur Verfï¿½gung stellen (ggf. alte Seite auslagern)
 	 * 
 	 * @param pid
 	 *            Prozess-Id
@@ -442,47 +443,47 @@ public class OperatingSystem {
 	 */
 	private int getNewRAMPage(PageTableEntry newPte, int pid) {
 		// Algorithmus:
-		// Anforderung einer neuen RAM-Seite für die gegebene newPte erfüllbar?
+		// Anforderung einer neuen RAM-Seite fï¿½r die gegebene newPte erfï¿½llbar?
 		// (< MAX_RAM_PAGES_PER_PROCESS)
-		// Ja, Seitenanforderung im RAM ist erfüllbar:
-		// neue Seite belegen und Adresse zurückgeben
-		// Nein, Seitenanforderung im RAM ist nicht erfüllbar:
-		// eine alte Seite zur Verdrängung auswählen -->
+		// Ja, Seitenanforderung im RAM ist erfï¿½llbar:
+		// neue Seite belegen und Adresse zurï¿½ckgeben
+		// Nein, Seitenanforderung im RAM ist nicht erfï¿½llbar:
+		// eine alte Seite zur Verdrï¿½ngung auswï¿½hlen -->
 		// Seitenersetzungs-Algorithmus
 		// alte Seite auf Platte auslagern (neuen Diskblock anfordern)
-		// im RAM löschen (mit Nullen überschreiben)
-		// Adresse als neue Seite zurückgeben
+		// im RAM lï¿½schen (mit Nullen ï¿½berschreiben)
+		// Adresse als neue Seite zurï¿½ckgeben
 		// ----------- Start ----------------
 		Process proc; // Aktuelles Prozessobjekt
 		int newPageFrameAdr = 0; // Reale Adresse einer neuen Seite im RAM
 		int replacePageFrameAdr = 0; // Reale Adresse einer zu ersetzenden Seite
 		int newDiskBlock = 0; // Reale Adresse eines neuen Plattenblocks
-		PageTableEntry replacePte; // Eintrag für eine ggf. zu ersetzende Seite
+		PageTableEntry replacePte; // Eintrag fï¿½r eine ggf. zu ersetzende Seite
 
 		proc = getProcess(pid);
-		// Anforderung einer neuen RAM-Seite erfüllbar?
+		// Anforderung einer neuen RAM-Seite erfï¿½llbar?
 		if (proc.pageTable.getSize() < MAX_RAM_PAGES_PER_PROCESS) {
-			// Ja, Seitenanforderung im RAM ist erfüllbar:
-			// neue Seite belegen und Adresse zurückgeben
+			// Ja, Seitenanforderung im RAM ist erfï¿½llbar:
+			// neue Seite belegen und Adresse zurï¿½ckgeben
 			newPageFrameAdr = allocateRAMPage();
-			// Liste der RAM-Seiten für den Prozess erweitern
+			// Liste der RAM-Seiten fï¿½r den Prozess erweitern
 			proc.pageTable.pteRAMlistInsert(newPte);
 		} else {
-			// Nein, Seitenanforderung im RAM ist nicht erfüllbar:
-			testOut("OS: getNewRAMPage " + pid + " ++ Seitenfehler für Seite "
+			// Nein, Seitenanforderung im RAM ist nicht erfï¿½llbar:
+			testOut("OS: getNewRAMPage " + pid + " ++ Seitenfehler fÃ¼r Seite "
 					+ newPte.virtPageNum + " --> Seitenersetzungs-Algorithmus!");
-			// eine alte Seite zur Verdrängung auswählen -->
+			// eine alte Seite zur Verdrï¿½ngung auswï¿½hlen -->
 			// Seitenersetzungs-Algorithmus
 			replacePte = proc.pageTable.selectNextRAMpteAndReplace(newPte);
 			replacePageFrameAdr = replacePte.realPageFrameAdr;
 			// alte Seite auf Platte auslagern (vorher neuen Diskblock
 			// anfordern)
-			// hier: IMMER zurückschreiben, weil keine Kopie auf der Platte
+			// hier: IMMER zurï¿½ckschreiben, weil keine Kopie auf der Platte
 			// bleibt
 			// (M-Bit wird also nicht benutzt!)
 			newDiskBlock = allocateDiskBlock();
 			dataTransferToDisk(replacePageFrameAdr, newDiskBlock);
-			// alte Seite im RAM löschen
+			// alte Seite im RAM lï¿½schen
 			freeRAMPage(replacePageFrameAdr);
 			// Plattenadresse in Seitentabelle eintragen
 			replacePte.realPageFrameAdr = newDiskBlock;
@@ -492,7 +493,7 @@ public class OperatingSystem {
 					+ replacePte.virtPageNum
 					+ " ist nun auf der Platte an Adresse "
 					+ replacePte.realPageFrameAdr);
-			// Adresse als neue Seite zurückgeben
+			// Adresse als neue Seite zurï¿½ckgeben
 			newPageFrameAdr = replacePageFrameAdr;
 		}
 		return newPageFrameAdr;
@@ -570,22 +571,22 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * Liefere eine freie RAM-Seite und lösche sie aus der RAM-Freibereichsliste
+	 * Liefere eine freie RAM-Seite und lï¿½sche sie aus der RAM-Freibereichsliste
 	 * 
 	 * @return reale Adresse einer freien RAM-Seite
 	 */
 	private int allocateRAMPage() {
 		// Algorithmus:
 		// 1. Block der Freibereichsliste um PAGE_SIZE verkleinern.
-		// Falls size = 0 --> löschen!
+		// Falls size = 0 --> lï¿½schen!
 		FreeListBlock ramFB; // Erster Block aus Freibereichsliste
-		int freePageAdr; // Rückgabeadresse
+		int freePageAdr; // Rï¿½ckgabeadresse
 
 		ramFB = (FreeListBlock) ramFreeList.getFirst();
 		freePageAdr = ramFB.getAdress();
 		// Block in Freibereichsliste aktualisieren
 		if (ramFB.getSize() == PAGE_SIZE) {
-			// Block wäre anschließend leer --> Löschen
+			// Block wï¿½re anschlieï¿½end leer --> Lï¿½schen
 			ramFreeList.removeFirst();
 		} else {
 			ramFB.setAdress(freePageAdr + PAGE_SIZE);
@@ -596,22 +597,22 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * Lösche eine RAM-Seite und trage sie in die RAM-Freibereichsliste ein
+	 * Lï¿½sche eine RAM-Seite und trage sie in die RAM-Freibereichsliste ein
 	 * 
 	 * @param ramAdr
 	 */
 	private void freeRAMPage(int ramAdr) {
 		// Algorithmus:
-		// RAM-Seite mit Nullen überschreiben (Security!) und neuen
+		// RAM-Seite mit Nullen ï¿½berschreiben (Security!) und neuen
 		// Freibereichsblock erzeugen
-		// (Eine Zusammenfassung von Freibereichsblöcken (Bereinigen der
-		// Fragmentierung) müsste
-		// zusätzlich implementiert werden!)
+		// (Eine Zusammenfassung von Freibereichsblï¿½cken (Bereinigen der
+		// Fragmentierung) mï¿½sste
+		// zusï¿½tzlich implementiert werden!)
 		Integer nullWord; // Null-Speicherwort
 		int ri; // aktuelle Speicherwortadresse im RAM
 		FreeListBlock ramFB; // neuer FreeListBlock
 
-		// RAM-Seite überschreiben
+		// RAM-Seite ï¿½berschreiben
 		nullWord = new Integer(0);
 		for (ri = ramAdr; ri < ramAdr + PAGE_SIZE; ri = ri + WORD_SIZE) {
 			physRAM.put(new Integer(ri), nullWord);
@@ -624,7 +625,7 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * Liefere einen freien Plattenblock und lösche ihn aus der
+	 * Liefere einen freien Plattenblock und lï¿½sche ihn aus der
 	 * Platten-Freibereichsliste
 	 * 
 	 * @return reale Adresse eines freien Plattenblocks oder -1, wenn die Platte
@@ -633,9 +634,9 @@ public class OperatingSystem {
 	private int allocateDiskBlock() {
 		// Algorithmus:
 		// 1. Block der Freibereichsliste um BLOCK_SIZE verkleinern. Falls size
-		// = 0 --> löschen!
+		// = 0 --> lï¿½schen!
 		FreeListBlock diskFB; // Erster Block aus Freibereichsliste
-		int freeBlockAdr; // Rückgabeadresse
+		int freeBlockAdr; // Rï¿½ckgabeadresse
 
 		diskFB = (FreeListBlock) diskFreeList.getFirst();
 		if ((diskFreeList.size() == 1) && (diskFB.getSize() == BLOCK_SIZE)) {
@@ -646,7 +647,7 @@ public class OperatingSystem {
 			freeBlockAdr = diskFB.getAdress();
 			// Block in Freibereichsliste aktualisieren
 			if (diskFB.getSize() == BLOCK_SIZE) {
-				// Block wäre anschließend leer --> Löschen
+				// Block wï¿½re anschlieï¿½end leer --> Lï¿½schen
 				diskFreeList.removeFirst();
 			} else {
 				diskFB.setAdress(freeBlockAdr + BLOCK_SIZE);
@@ -658,23 +659,23 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * Lösche einen Plattenblock und trage ihn in die Platten-Freibereichsliste
+	 * Lï¿½sche einen Plattenblock und trage ihn in die Platten-Freibereichsliste
 	 * ein
 	 * 
 	 * @param diskAdr
 	 */
 	private void freeDiskBlock(int diskAdr) {
 		// Algorithmus:
-		// Plattenblock mit Nullen überschreiben (Security!) und neuen
+		// Plattenblock mit Nullen ï¿½berschreiben (Security!) und neuen
 		// Freibereichsblock erzeugen
-		// (Eine Zusammenfassung von Freibereichsblöcken (Bereinigen der
-		// Fragmentierung) müsste
-		// zusätzlich implementiert werden!)
+		// (Eine Zusammenfassung von Freibereichsblï¿½cken (Bereinigen der
+		// Fragmentierung) mï¿½sste
+		// zusï¿½tzlich implementiert werden!)
 		Integer nullWord; // Null-Speicherwort
 		int di; // aktuelle Speicherwortadresse auf der Platte
 		FreeListBlock diskFB; // neuer FreeListBlock
 
-		// Plattenblock überschreiben
+		// Plattenblock ï¿½berschreiben
 		nullWord = new Integer(0);
 		for (di = diskAdr; di < diskAdr + BLOCK_SIZE; di = di + WORD_SIZE) {
 			physDisk.put(new Integer(di), nullWord);
@@ -686,12 +687,12 @@ public class OperatingSystem {
 		testOut("OS: Plattenblock " + diskAdr + " wurde freigegeben!");
 	}
 
-	// ------------------------- getter-Methoden für Konstanten
+	// ------------------------- getter-Methoden fï¿½r Konstanten
 	// -------------------------------
 
 	/**
 	 * @return Die max. Anzahl Seiten pro Prozess im Hauptspeicher (sonst
-	 *         Verdrängung eigener Seiten).
+	 *         Verdrï¿½ngung eigener Seiten).
 	 */
 	public int getMAX_RAM_PAGES_PER_PROCESS() {
 		return MAX_RAM_PAGES_PER_PROCESS;
@@ -700,7 +701,7 @@ public class OperatingSystem {
 	/**
 	 * @param i
 	 *            max. Anzahl Seiten pro Prozess im Hauptspeicher (sonst
-	 *            Verdrängung eigener Seiten)
+	 *            Verdrï¿½ngung eigener Seiten)
 	 */
 	public void setMAX_RAM_PAGES_PER_PROCESS(int i) {
 		i = Math.max(1, i);
@@ -736,28 +737,28 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * @return Die Länge eines Datenworts (in Byte)
+	 * @return Die Lï¿½nge eines Datenworts (in Byte)
 	 */
 	public int getWORD_SIZE() {
 		return WORD_SIZE;
 	}
 
 	/**
-	 * @return Die Größe einer Seite (in Byte)
+	 * @return Die Grï¿½ï¿½e einer Seite (in Byte)
 	 */
 	public int getPAGE_SIZE() {
 		return PAGE_SIZE;
 	}
 
 	/**
-	 * @return Die Größe des Hauptspeichers (in Byte)
+	 * @return Die Grï¿½ï¿½e des Hauptspeichers (in Byte)
 	 */
 	public int getRAM_SIZE() {
 		return RAM_SIZE;
 	}
 
 	/**
-	 * @return Die Größe des virtuellen Adressraums (in Byte)
+	 * @return Die Grï¿½ï¿½e des virtuellen Adressraums (in Byte)
 	 */
 	public int getVIRT_ADR_SPACE() {
 		return VIRT_ADR_SPACE;
@@ -772,7 +773,7 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * @return Die Größe der Festplatte (in Byte)
+	 * @return Die Grï¿½ï¿½e der Festplatte (in Byte)
 	 */
 	public int getDISK_SIZE() {
 		return DISK_SIZE;
@@ -795,7 +796,7 @@ public class OperatingSystem {
 	}
 
 	/**
-	 * @return Testausgaben erwünscht?
+	 * @return Testausgaben erwï¿½nscht?
 	 */
 	public boolean isTestMode() {
 		return testMode;
@@ -803,7 +804,7 @@ public class OperatingSystem {
 
 	/**
 	 * @param testMode
-	 *            - Testausgaben erwünscht?
+	 *            - Testausgaben erwï¿½nscht?
 	 */
 	public void setTestMode(boolean testMode) {
 		this.testMode = testMode;

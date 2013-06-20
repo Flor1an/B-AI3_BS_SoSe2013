@@ -24,6 +24,7 @@ public class Car extends Thread implements Comparable<Car> {
                     Thread.sleep(rundenZeit);
                 } catch (InterruptedException e) {
                     this.interrupt();
+                   
                 }
             } else {
                 return;

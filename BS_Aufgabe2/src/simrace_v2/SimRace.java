@@ -16,14 +16,15 @@ public class SimRace {
 		List<Car> fahrerfeld = new ArrayList<>();
 		Accident accident = new Accident(Thread.currentThread());
 
-		accident.start();
-
 		for (int i = 1; i <= FAHRZEUGE; i++) {
 			Car car = new Car("Wagen " + i);
 			car.start();
 			fahrerfeld.add(car);
 		}
+		accident.start();
+		
 
+		
 		try {
 			for (Car car : fahrerfeld) {
 				car.join();

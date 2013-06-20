@@ -8,7 +8,7 @@ package osbsp;
  * Initialisierung der Simulationsumgebung, Start/Ende der Simulation und
  * Auswertung
  * 
- * @author Martin Hübner
+ * @author Martin Hï¿½bner
  */
 public class SimulationEnv {
 
@@ -18,8 +18,7 @@ public class SimulationEnv {
 	public static int simulationTime;
 
 	/**
-	 * Anzahl an erzeugten Prozessen (1 reicht für die Auswertung der
-	 * Seitenfehlerrate)
+	 * Anzahl an erzeugten Prozessen (1 reicht fï¿½r die Auswertung der Seitenfehlerrate)
 	 */
 	public static final int NUM_OF_PROCESSES = 1;
 
@@ -42,26 +41,26 @@ public class SimulationEnv {
 		// ------------------------------------------
 		// Dauer der Simulation in ms
 		simulationTime = 100;
-		// max. Anzahl Seiten pro Prozess im Hauptspeicher (sonst Verdrängung eigener Seiten)
+		// max. Anzahl Seiten pro Prozess im Hauptspeicher (sonst Verdrï¿½ngung eigener Seiten)
 		os.setMAX_RAM_PAGES_PER_PROCESS(10); 
 		// CLOCK oder FIFO oder RANDOM
-		os.setREPLACEMENT_ALGORITHM(OperatingSystem.ImplementedReplacementAlgorithms.CLOCK); 
+		os.setREPLACEMENT_ALGORITHM(OperatingSystem.ImplementedReplacementAlgorithms.FIFO); 
 		// Anzahl Operationen innerhalb eines Seitenbereichs
 		os.setDEFAULT_LOCALITY_FACTOR(1); 
 
-		// Testausgaben erwünscht? Wenn true, dann simulationTime auf max. 100 ms setzen!
+		// Testausgaben erwï¿½nscht? Wenn true, dann simulationTime auf max. 100 ms setzen!
 		os.setTestMode(true); 
 
 		// ------------------------- Parameter setzen Ende
 		// -----------------------------------------------
 
-		// Erzeugen von unabhängigen Prozessen
+		// Erzeugen von unabhï¿½ngigen Prozessen
 		for (int i = 0; i < NUM_OF_PROCESSES; i++) {
-			pid = os.createProcess(5120); // 20 Seiten bei einer Seitengröße von
+			pid = os.createProcess(5120); // 20 Seiten bei einer Seitengrï¿½ï¿½e von
 											// 256 KB
 			if (pid < 0) {
 				System.out
-						.println("*********** Fehlerhafte Konfiguration: Zu wenig RAM für "
+						.println("*********** Fehlerhafte Konfiguration: Zu wenig RAM fï¿½r "
 								+ NUM_OF_PROCESSES + " Prozesse! *************");
 				break;
 			}
